@@ -10,11 +10,15 @@ app.use(cookieParser());
 
 app.use(expressLayouts);
 
+// extract Style and script from sublayout to layout
 app.set('layout extractStyles', true);
 app.set('layout extractScripts', true);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// static files
+app.use(express.static('assets'));
 
 // views
 app.set('view engine', 'ejs');

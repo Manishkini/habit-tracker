@@ -1,0 +1,25 @@
+<div class="relative w-screen h-screen">
+    <div class="flex flex-col text-center absolute h-96 w-96 border border-black top-1/4 left-[40%] bg-orange-200">
+        <div class="flex flex-row w-4/5 mx-auto">
+            <img src="/images/logo.png" alt="Habit Tracker" class="w-1/4">
+            <p class="grow place-self-center text-2xl font-bold">HABIT TRACKER</p>
+        </div>
+        <hr class="border border-black my-4">
+        <form class="flex flex-col gap-8 grow w-4/5 mx-auto content-around" action="/user/createSession" method="post">
+            <div class="input-box flex flex-col text-left">
+                <label for="username">Username</label>
+                <input class="h-10" type="text" name="username" id="username" required>
+            </div>
+            <div class="input-box flex flex-col text-left">
+                <label for="password">Password</label>
+                <input class="h-10" type="password" name="password" id="password" required>
+            </div>
+            <div class="input-box flex flex-row justify-evenly">
+                <input class="bg-orange-900 w-24 h-10 text-white cursor-pointer" type="submit" value="Sign-in">
+                <input class="bg-orange-900 w-24 h-10 text-white cursor-pointer" type="button" value="Sign-up"
+                    onclick="goTo('sign-up')">
+            </div>
+        </form>
+    </div>
+</div>
+<script src="/js/auth.js"></script>
