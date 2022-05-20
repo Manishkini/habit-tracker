@@ -1,0 +1,33 @@
+{
+  "name": "habit-tracker",
+  "version": "1.0.0",
+  "description": "Habit Tracker is web application to create the habit and track it using several status.",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-ejs-layouts": "^2.5.1",
+    "moment": "^2.29.3",
+    "mongoose": "^6.3.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Manishkini/habit-tracker.git"
+  },
+  "keywords": [
+    "habit-tracker"
+  ],
+  "author": "Manish Kini.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Manishkini/habit-tracker/issues"
+  },
+  "homepage": "https://github.com/Manishkini/habit-tracker#readme"
+}
