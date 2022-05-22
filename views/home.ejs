@@ -1,1 +1,27 @@
-<h1>Home</h1>
+<div class="w-full">
+    <div class="w-2/3 mx-auto border">
+        <div class="text-center">
+            <button class="bg-black text-white p-2 rounded-md">
+                <a href="/habit/creation-form" target="_blank">Add Habit</a>
+            </button>
+        </div>
+        <div class="flex flex-col gap-4">
+            <% for(let i = 0; i < habits.length; i++) { %>
+            <a href="<%= `/habit/view/${habits[i]._id}` %> ">
+                <div class="flex flex-col">
+                    <!-- Name of Habit -->
+                    <div class="flex flex-row justify-between">
+                        <p><%= habits[i].title %> </p>
+                        <p><%= new Date(habits[i].start_date) %> </p>
+                    </div>
+                    <!-- Info of Habit -->
+                    <div class="flex flex-row justify-between">
+                        <p>streak</p>
+                        <p>31/82</p>
+                    </div>
+                </div>
+            </a>
+            <% } %>
+        </div>
+    </div>
+</div>
