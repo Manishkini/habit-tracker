@@ -102,3 +102,70 @@ module.exports.detailedView = async (req, res) => {
     return;
   }
 };
+
+module.exports.changeStatus = async (req, res) => {
+  try {
+    if (req.cookies && req.cookies.user_id) {
+      const foundUser = await User.findById(req.cookies.user_id);
+      if (foundUser) {
+        const status =
+          req.body.status === 'none'
+            ? 'done'
+            : req.body.status === 'done'
+            ? 'notDone'
+            : 'none';
+        const foundHabit = await Habit.findById(req.body.habitId)
+          .populate({ path: 'habit_details' })
+          .exec();
+        if (foundHabit) {
+          let foundHabitDetails = req.body.habitDetailsId
+            ? await HabitDetails.findById(req.body.habitDetailsId)
+            : null;
+          if (foundHabitDetails) {
+            foundHabitDetails.status = status;
+            await foundHabitDetails.save();
+          } else {
+            foundHabitDetails = await HabitDetails.create({
+              habit: foundHabit._id,
+              user: req.cookies.user_id,
+              date: moment(req.body.currDate, 'DD-MM-YYYY').format(
+                'YYYY-MM-DD'
+              ),
+              status: 'done',
+            });
+            if (foundHabitDetails && foundHabitDetails.id) {
+              foundHabit.habit_details.push(foundHabitDetails._id);
+              await foundHabit.save();
+            }
+          }
+          await foundHabit.populate('habit_details');
+          return res.send(200, {
+            data: {
+              massage: 'status changes successfully!',
+              habits: foundHabit,
+            },
+          });
+        } else {
+          console.log('Habit Not Found');
+          return res.send(500, {
+            data: {
+              massage: 'Habit not found',
+            },
+          });
+        }
+      } else {
+        console.log('User Not Found');
+        res.clearCookie('user_id');
+        return res.redirect('/auth/sign-in');
+      }
+    } else {
+      return res.render('sign-in', {
+        title: 'Habit Tracker | Sign In page',
+        layout: 'auth-layout',
+      });
+    }
+  } catch (err) {
+    console.log('Something Went Wrong', err);
+    return;
+  }
+};
