@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Habit = require('../models/habit');
+const moment = require('moment');
 
 module.exports.home = async (req, res) => {
   try {
@@ -15,6 +16,7 @@ module.exports.home = async (req, res) => {
             title: 'Habit Tracker | Home page',
             user: foundUser,
             habits: habits,
+            moment: moment,
             layout: 'layout',
           });
         } else {

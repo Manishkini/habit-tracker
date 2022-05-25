@@ -38,6 +38,7 @@ module.exports.create = async (req, res) => {
         const newHabit = await Habit.create({
           title: req.body.title,
           user: req.cookies.user_id,
+          start_date: req.body.start_date,
         });
         if (newHabit && newHabit.id) {
           const newHabitDetails = await HabitDetails.create({
@@ -77,10 +78,50 @@ module.exports.detailedView = async (req, res) => {
           .populate({ path: 'habit_details' })
           .exec();
         if (foundHabit) {
+          const totalDone = foundHabit.habit_details.filter(
+            (obj) => obj.status === 'done'
+          );
+          const totalNotDone = foundHabit.habit_details.filter(
+            (obj) => obj.status === 'notDone'
+          );
+          const startDate = moment(foundHabit.start_date);
+          const currDate = moment();
+          const totalHabitDays = currDate.diff(startDate, 'days') + 1;
+          const totalNone =
+            totalHabitDays - totalDone.length - totalNotDone.length;
+          let longestStreak = 0;
+          let couter = 0;
+          for (let i = 0; i <= totalHabitDays; i++) {
+            const date = moment(foundHabit.start_date)
+              .add(i, 'd')
+              .format('DD-MM-YYYY');
+            const foundObj = foundHabit.habit_details.find(
+              (obj) => moment(obj.date).format('DD-MM-YYYY') === date
+            );
+            if (foundObj) {
+              if (foundObj.status === 'done') {
+                couter++;
+                if (longestStreak < couter) {
+                  longestStreak = couter;
+                }
+              } else if (foundObj.status === 'notDone') {
+                couter = 0;
+              } else {
+                couter = 0;
+              }
+            } else {
+              couter = 0;
+            }
+          }
           return res.render('habit-details', {
             title: 'Habit Tracker | Habit Detail page',
             user: foundUser,
             habit: foundHabit,
+            totalHabitDays: totalHabitDays,
+            totalDone: totalDone.length,
+            totalNotDone: totalNotDone.length,
+            totalNone: totalNone,
+            longestStreak: longestStreak,
             moment: moment,
             layout: 'layout',
           });
@@ -138,11 +179,9 @@ module.exports.changeStatus = async (req, res) => {
               await foundHabit.save();
             }
           }
-          await foundHabit.populate('habit_details');
           return res.send(200, {
             data: {
               massage: 'status changes successfully!',
-              habits: foundHabit,
             },
           });
         } else {
