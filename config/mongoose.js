@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // mongoose.connect('');
-mongoose.connect('mongodb://localhost:27017/habit-tracker');
+mongoose.connect(process.env.MONGODB_URL);
 
 const db = mongoose.connection;
 
