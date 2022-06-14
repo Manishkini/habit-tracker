@@ -1,11 +1,14 @@
 const express = require('express');
 const PORT = '9630';
 const app = express();
+const dotenv = require('dotenv');
+dotenv.config();
 const db = require('./config/mongoose');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const expressLayouts = require('express-ejs-layouts');
 
+console.log(process.env.MONGODB_URL);
 app.use(cookieParser());
 
 app.use(expressLayouts);
