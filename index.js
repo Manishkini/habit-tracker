@@ -29,7 +29,7 @@ app.set('views', './views');
 // routes
 app.use('/', require('./routes'));
 
-app.listen(PORT, (err) => {
+app.listen(process.env.PORT || PORT, (err) => {
   if (err) console.error('something went wrong' + err);
   console.log('app is running on http://localhost:' + PORT);
 });
